@@ -215,6 +215,49 @@ export default ESLintUtils.RuleCreator.withoutDocs({
             });
         }
 
+        function reportNoBeginningLinebreak(node: TSESTree.Node, token: TSESTree.Token) {
+            context.report({
+                node,
+                loc: token.loc,
+                messageId: "missingLineBreak",
+                fix(fixer) {
+                    const nextToken = sourceCode.getTokenAfter(token, {
+                        includeComments: true,
+                    });
+
+                    if (!nextToken || ASTUtils.isCommentToken(nextToken)) {
+                        return null;
+                    }
+
+                    return fixer.removeRange([token.range[1], nextToken.range![0]]);
+                },
+            });
+        }
+
+        /**
+         * Reports that there shouldn't be a linebreak before the last token
+         * @param node The node to report in the event of an error.
+         * @param token The token to use for the report.
+         */
+        function reportNoEndingLinebreak(node: TSESTree.Node, token: TSESTree.Token) {
+            context.report({
+                node,
+                loc: token.loc,
+                messageId: "missingLineBreak",
+                fix(fixer) {
+                    const previousToken = sourceCode.getTokenBefore(token, {
+                        includeComments: true,
+                    });
+
+                    if (!previousToken || ASTUtils.isCommentToken(previousToken)) {
+                        return null;
+                    }
+
+                    return fixer.replaceTextRange([previousToken.range![1], token.range[0]], " ");
+                },
+            });
+        }
+
         function reportRequiredEndingLinebreak(node: TSESTree.Node, token: TSESTree.Token) {
             context.report({
                 node,
@@ -336,6 +379,12 @@ export default ESLintUtils.RuleCreator.withoutDocs({
                     }
                     if (ASTUtils.isTokenOnSameLine(maybeOpenBraceToken, next)) {
                         reportRequiredBeginningLinebreak(node, maybeOpenBraceToken);
+                    }
+                    if (!ASTUtils.isTokenOnSameLine(maybeCloseBraceToken, commaToken)) {
+                        reportNoBeginningLinebreak(node, maybeCloseBraceToken);
+                    }
+                    if (!ASTUtils.isTokenOnSameLine(commaToken, maybeOpenBraceToken)) {
+                        reportNoEndingLinebreak(node, maybeOpenBraceToken);
                     }
                 }
                 else if (needsLinebreaks) {

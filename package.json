@@ -18,7 +18,7 @@
     "lib"
   ],
   "scripts": {
-    "build": "npx tsc",
+    "build": "npx rimraf lib && npx tsc",
     "test": "vitest"
   }
 }

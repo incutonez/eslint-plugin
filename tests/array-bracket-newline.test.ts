@@ -455,6 +455,37 @@ ruleTester.run("array-bracket-newline", arrayBracketNewline, {
                 }
             ]
         },
+        {
+            code: "var foo = [{blah: 1},\n];",
+            output: "var foo = [{\nblah: 1\n}];",
+            options: [{bracesSameLine: true}],
+            errors: [
+                {
+                    messageId: "missingOpeningLinebreak",
+                    type: "ArrayExpression",
+                    line: 1,
+                    column: 12,
+                    endLine: 1,
+                    endColumn: 13
+                },
+                {
+                    messageId: "missingClosingLinebreak",
+                    type: "ArrayExpression",
+                    line: 1,
+                    column: 20,
+                    endLine: 1,
+                    endColumn: 21
+                },
+                {
+                    messageId: "unexpectedClosingLinebreak",
+                    type: "ArrayExpression",
+                    line: 2,
+                    column: 1,
+                    endLine: 2,
+                    endColumn: 2
+                },
+            ]
+        },
 
         // default : { multiline : true}
         {

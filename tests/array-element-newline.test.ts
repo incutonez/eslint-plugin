@@ -55,7 +55,10 @@ ruleTester.run("array-element-newline", arrayElementNewline, {
         { code: "var foo = [[1,2\n],3,[4\n]\n]", options: ["never"] },
 
         // {bracesSameLine: true}
-        { code: "var foo = [{\nblah: 1\n}, {\nblah: 2\n}];", options: [{bracesSameLine: true}] },
+        {
+            code: "var foo = [{\nblah: 1\n}, {\nblah: 2\n}];",
+            options: [{bracesSameLine: true}]
+        },
 
         // "consistent"
         { code: "var foo = [];", options: ["consistent"] },
@@ -629,6 +632,62 @@ ruleTester.run("array-element-newline", arrayElementNewline, {
                     messageId: "missingLineBreak",
                     endLine: 2,
                     endColumn: 12
+                },
+            ]
+        },
+        {
+            code: "var foo = [{\nblah: 1}, \n{blah: 2\n}];",
+            output: "var foo = [{\nblah: 1\n}, {\nblah: 2\n}];",
+            options: [{bracesSameLine: true}],
+            errors: [
+                {
+                    line: 2,
+                    column: 8,
+                    messageId: "missingLineBreak",
+                    endLine: 2,
+                    endColumn: 9
+                },
+                {
+                    line: 3,
+                    column: 1,
+                    messageId: "missingLineBreak",
+                    endLine: 3,
+                    endColumn: 2
+                },
+                {
+                    line: 3,
+                    column: 1,
+                    messageId: "missingLineBreak",
+                    endLine: 3,
+                    endColumn: 2
+                },
+            ]
+        },
+        {
+            code: "var foo = [{\nblah: 1\n}\n, \n{blah: 2\n}];",
+            output: "var foo = [{\nblah: 1\n}, {\nblah: 2\n}];",
+            options: [{bracesSameLine: true}],
+            errors: [
+                {
+                    line: 3,
+                    column: 1,
+                    messageId: "missingLineBreak",
+                    endLine: 3,
+                    endColumn: 2
+                },
+                {
+                    line: 5,
+                    column: 1,
+                    messageId: "missingLineBreak",
+                    endLine: 5,
+                    endColumn: 2
+                },
+                {
+                    line: 5,
+                    column: 1,
+                    messageId: "missingLineBreak",
+                    endLine: 5,
+                    endColumn: 2
                 },
             ]
         },

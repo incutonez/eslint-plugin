@@ -135,15 +135,15 @@ export default ESLintUtils.RuleCreator.withoutDocs({
 		 * @param node The node to report in the event of an error.
 		 * @param token The token to use for the report.
 		 */
-		function reportNoEndingLinebreak(node: TSESTree.Node, token: TSESTree.Token) {
+		function reportNoEndingLinebreak(node: TSESTree.Node, token: TSESTree.Token, previousToken?: TSESTree.Token) {
 			context.report({
 				node,
 				loc: token.loc,
 				messageId: "unexpectedClosingLinebreak",
 				fix(fixer) {
-					const previousToken = sourceCode.getTokenBefore(token, {
+					previousToken ??= sourceCode.getTokenBefore(token, {
 						includeComments: true,
-					});
+					})!;
 
 					if (!previousToken || ASTUtils.isCommentToken(previousToken)) {
 						return null;
@@ -205,8 +205,8 @@ export default ESLintUtils.RuleCreator.withoutDocs({
 			const lastIncComment = sourceCode.getTokenBefore(closeBracket, {
 				includeComments: true,
 			})!;
-			const first = sourceCode.getTokenAfter(openBracket)!;
-			const last = sourceCode.getTokenBefore(closeBracket)!;
+			const maybeOpenBrace = sourceCode.getTokenAfter(openBracket)!;
+			let maybeCloseBrace = sourceCode.getTokenBefore(closeBracket)!;
 			const needsLinebreaks = (
 				elements.length >= options.minItems
 				|| (
@@ -222,7 +222,7 @@ export default ESLintUtils.RuleCreator.withoutDocs({
 				)
 				|| (
 					options.consistent
-					&& openBracket.loc.end.line !== first.loc.start.line
+					&& openBracket.loc.end.line !== maybeOpenBrace.loc.start.line
 				)
 			);
 
@@ -234,29 +234,38 @@ export default ESLintUtils.RuleCreator.withoutDocs({
 			 *         'a'
 			 *     ]
 			 */
-			if (options.bracesSameLine && ASTUtils.isOpeningBraceToken(first)) {
-				const next = sourceCode.getTokenAfter(first)!;
-				const before = sourceCode.getTokenBefore(last)!;
-				if (ASTUtils.isTokenOnSameLine(openBracket, next)) {
-					reportRequiredBeginningLinebreak(node, first);
+			if (options.bracesSameLine && ASTUtils.isOpeningBraceToken(maybeOpenBrace)) {
+				if (ASTUtils.isCommaToken(maybeCloseBrace)) {
+					maybeCloseBrace = sourceCode.getTokenBefore(maybeCloseBrace)!;
 				}
-				if (ASTUtils.isTokenOnSameLine(closeBracket, before)) {
-					reportRequiredEndingLinebreak(node, last);
+				const next = sourceCode.getTokenAfter(maybeOpenBrace)!;
+				const before = sourceCode.getTokenBefore(maybeCloseBrace)!;
+				if (ASTUtils.isTokenOnSameLine(maybeOpenBrace, next)) {
+					reportRequiredBeginningLinebreak(node, maybeOpenBrace);
+				}
+				if (ASTUtils.isTokenOnSameLine(maybeCloseBrace, before)) {
+					reportRequiredEndingLinebreak(node, maybeCloseBrace);
+				}
+				if (!ASTUtils.isTokenOnSameLine(openBracket, maybeOpenBrace)) {
+					reportNoBeginningLinebreak(node, openBracket);
+				}
+				if (!ASTUtils.isTokenOnSameLine(closeBracket, maybeCloseBrace)) {
+					reportNoEndingLinebreak(node, closeBracket, maybeCloseBrace);
 				}
 			}
 			else if (needsLinebreaks) {
-				if (ASTUtils.isTokenOnSameLine(openBracket, first)) {
+				if (ASTUtils.isTokenOnSameLine(openBracket, maybeOpenBrace)) {
 					reportRequiredBeginningLinebreak(node, openBracket);
 				}
-				if (ASTUtils.isTokenOnSameLine(last, closeBracket)) {
+				if (ASTUtils.isTokenOnSameLine(maybeCloseBrace, closeBracket)) {
 					reportRequiredEndingLinebreak(node, closeBracket);
 				}
 			}
 			else {
-				if (!ASTUtils.isTokenOnSameLine(openBracket, first)) {
+				if (!ASTUtils.isTokenOnSameLine(openBracket, maybeOpenBrace)) {
 					reportNoBeginningLinebreak(node, openBracket);
 				}
-				if (!ASTUtils.isTokenOnSameLine(last, closeBracket)) {
+				if (!ASTUtils.isTokenOnSameLine(maybeCloseBrace, closeBracket)) {
 					reportNoEndingLinebreak(node, closeBracket);
 				}
 			}
