@@ -1,0 +1,16 @@
+{
+  "name": "eslint-plugin-incutonez",
+  "dependencies": {
+    "@typescript-eslint/parser": "^7.1.1",
+    "@typescript-eslint/utils": "^7.1.1"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.2"
+  },
+  "files": ["lib"],
+  "main": "./lib/index.js",
+  "scripts": {
+    "build": "npx tsc"
+  }
+}
