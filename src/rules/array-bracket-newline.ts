@@ -227,7 +227,6 @@ export default ESLintUtils.RuleCreator.withoutDocs({
 			 *         'a'
 			 *     ]
 			 */
-
 			if (needsLinebreaks) {
 				if (ASTUtils.isTokenOnSameLine(openBracket, first)) {
 					reportRequiredBeginningLinebreak(node, openBracket);
