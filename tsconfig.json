@@ -22,6 +22,7 @@
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
     "target": "es2022",
+    "moduleResolution": "Node",
     "typeRoots": ["./@types", "./node_modules/@types"]
   },
   "exclude": ["node_modules", "tests"],

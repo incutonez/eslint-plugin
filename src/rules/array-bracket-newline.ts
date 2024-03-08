@@ -114,7 +114,7 @@ export default ESLintUtils.RuleCreator.withoutDocs({
 						includeComments: true,
 					});
 
-					if (!nextToken || ASTUtils.isCommentToken(nextToken)) {
+					if (!nextToken || ASTUtils.isCommentToken(nextToken) || ASTUtils.isOpeningBraceToken(nextToken)) {
 						return null;
 					}
 
@@ -138,7 +138,7 @@ export default ESLintUtils.RuleCreator.withoutDocs({
 						includeComments: true,
 					});
 
-					if (!previousToken || ASTUtils.isCommentToken(previousToken)) {
+					if (!previousToken || ASTUtils.isCommentToken(previousToken) || ASTUtils.isClosingBraceToken(previousToken)) {
 						return null;
 					}
 
@@ -227,7 +227,18 @@ export default ESLintUtils.RuleCreator.withoutDocs({
 			 *         'a'
 			 *     ]
 			 */
-			if (needsLinebreaks) {
+			if (ASTUtils.isOpeningBraceToken(first)) {
+				const next = sourceCode.getTokenAfter(first)!;
+				const before = sourceCode.getTokenBefore(last)!;
+				console.log('what is', next)
+				if (ASTUtils.isTokenOnSameLine(openBracket, next)) {
+					reportRequiredBeginningLinebreak(node, first);
+				}
+				if (ASTUtils.isTokenOnSameLine(node, before)) {
+					reportRequiredEndingLinebreak(node, last)
+				}
+			}
+			else if (needsLinebreaks) {
 				if (ASTUtils.isTokenOnSameLine(openBracket, first)) {
 					reportRequiredBeginningLinebreak(node, openBracket);
 				}

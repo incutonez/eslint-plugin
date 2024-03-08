@@ -6,11 +6,7 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 // Tests
 //------------------------------------------------------------------------------
 
-const ruleTester = new RuleTester({
-    parserOptions: {
-        tsconfigRootDir: ".",
-    }
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run("array-bracket-newline", arrayBracketNewline, {
 
@@ -35,6 +31,11 @@ ruleTester.run("array-bracket-newline", arrayBracketNewline, {
         "var foo = [[1,2]]",
 
         // "always"
+        {
+            only: true,
+            code: "var foo = [{\nblah: 1\n}];",
+            options: ["always"]
+        },
         { code: "var foo = [\n];", options: ["always"] },
         { code: "var foo = [\n1\n];", options: ["always"] },
         { code: "var foo = [\n// any\n1\n];", options: ["always"] },
@@ -432,6 +433,30 @@ ruleTester.run("array-bracket-newline", arrayBracketNewline, {
     ],
 
     invalid: [
+        {
+            only: true,
+            code: "var foo = [{blah: 1}];",
+            output: "var foo = [{\nblah: 1\n}];",
+            options: ["always"],
+            errors: [
+                {
+                    messageId: "missingOpeningLinebreak",
+                    type: "ArrayExpression",
+                    line: 1,
+                    column: 12,
+                    endLine: 1,
+                    endColumn: 13
+                },
+                {
+                    messageId: "missingClosingLinebreak",
+                    type: "ArrayExpression",
+                    line: 1,
+                    column: 20,
+                    endLine: 1,
+                    endColumn: 21
+                }
+            ]
+        },
 
         // default : { multiline : true}
         {
