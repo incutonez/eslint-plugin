@@ -1,4 +1,4 @@
-import { ESLintUtils, ASTUtils, type TSESTree } from "@typescript-eslint/utils";
+import { ASTUtils, ESLintUtils, type TSESTree } from "@typescript-eslint/utils";
 
 export default ESLintUtils.RuleCreator.withoutDocs({
 	defaultOptions: [],
@@ -28,6 +28,9 @@ export default ESLintUtils.RuleCreator.withoutDocs({
 								type: ["integer", "null"],
 								minimum: 0,
 							},
+							bracesSameLine: {
+								type: "boolean"
+							},
 						},
 						additionalProperties: false,
 					},
@@ -53,6 +56,7 @@ export default ESLintUtils.RuleCreator.withoutDocs({
 		 */
 		function normalizeOptionValue(option: any) {
 			let consistent = false;
+			let bracesSameLine = false;
 			let multiline = false;
 			let minItems = 0;
 
@@ -61,18 +65,22 @@ export default ESLintUtils.RuleCreator.withoutDocs({
 					consistent = true;
 					minItems = Number.POSITIVE_INFINITY;
 				}
- else if (option === "always" || (typeof option !== "string" && option.minItems === 0)) {
+				else if (option.bracesSameLine) {
+					bracesSameLine = true;
+					minItems = option.minItems || Number.POSITIVE_INFINITY;
+				}
+				else if (option === "always" || (typeof option !== "string" && option.minItems === 0)) {
 					minItems = 0;
 				}
- else if (option === "never") {
+				else if (option === "never") {
 					minItems = Number.POSITIVE_INFINITY;
 				}
- else {
+				else {
 					multiline = Boolean(option.multiline);
 					minItems = option.minItems || Number.POSITIVE_INFINITY;
 				}
 			}
- else {
+			else {
 				consistent = false;
 				multiline = true;
 				minItems = Number.POSITIVE_INFINITY;
@@ -82,6 +90,7 @@ export default ESLintUtils.RuleCreator.withoutDocs({
 				consistent,
 				multiline,
 				minItems,
+				bracesSameLine,
 			};
 		}
 
@@ -101,8 +110,6 @@ export default ESLintUtils.RuleCreator.withoutDocs({
 
 		/**
 		 * Reports that there shouldn't be a linebreak after the first token
-		 * @param node The node to report in the event of an error.
-		 * @param token The token to use for the report.
 		 */
 		function reportNoBeginningLinebreak(node: TSESTree.Node, token: TSESTree.Token) {
 			context.report({
@@ -114,7 +121,7 @@ export default ESLintUtils.RuleCreator.withoutDocs({
 						includeComments: true,
 					});
 
-					if (!nextToken || ASTUtils.isCommentToken(nextToken) || ASTUtils.isOpeningBraceToken(nextToken)) {
+					if (!nextToken || ASTUtils.isCommentToken(nextToken)) {
 						return null;
 					}
 
@@ -138,7 +145,7 @@ export default ESLintUtils.RuleCreator.withoutDocs({
 						includeComments: true,
 					});
 
-					if (!previousToken || ASTUtils.isCommentToken(previousToken) || ASTUtils.isClosingBraceToken(previousToken)) {
+					if (!previousToken || ASTUtils.isCommentToken(previousToken)) {
 						return null;
 					}
 
@@ -227,15 +234,14 @@ export default ESLintUtils.RuleCreator.withoutDocs({
 			 *         'a'
 			 *     ]
 			 */
-			if (ASTUtils.isOpeningBraceToken(first)) {
+			if (options.bracesSameLine && ASTUtils.isOpeningBraceToken(first)) {
 				const next = sourceCode.getTokenAfter(first)!;
 				const before = sourceCode.getTokenBefore(last)!;
-				console.log('what is', next)
 				if (ASTUtils.isTokenOnSameLine(openBracket, next)) {
 					reportRequiredBeginningLinebreak(node, first);
 				}
-				if (ASTUtils.isTokenOnSameLine(node, before)) {
-					reportRequiredEndingLinebreak(node, last)
+				if (ASTUtils.isTokenOnSameLine(closeBracket, before)) {
+					reportRequiredEndingLinebreak(node, last);
 				}
 			}
 			else if (needsLinebreaks) {
@@ -246,7 +252,7 @@ export default ESLintUtils.RuleCreator.withoutDocs({
 					reportRequiredEndingLinebreak(node, closeBracket);
 				}
 			}
- else {
+			else {
 				if (!ASTUtils.isTokenOnSameLine(openBracket, first)) {
 					reportNoBeginningLinebreak(node, openBracket);
 				}

@@ -32,9 +32,8 @@ ruleTester.run("array-bracket-newline", arrayBracketNewline, {
 
         // "always"
         {
-            only: true,
             code: "var foo = [{\nblah: 1\n}];",
-            options: ["always"]
+            options: [{bracesSameLine: true}]
         },
         { code: "var foo = [\n];", options: ["always"] },
         { code: "var foo = [\n1\n];", options: ["always"] },
@@ -434,10 +433,9 @@ ruleTester.run("array-bracket-newline", arrayBracketNewline, {
 
     invalid: [
         {
-            only: true,
             code: "var foo = [{blah: 1}];",
             output: "var foo = [{\nblah: 1\n}];",
-            options: ["always"],
+            options: [{bracesSameLine: true}],
             errors: [
                 {
                     messageId: "missingOpeningLinebreak",

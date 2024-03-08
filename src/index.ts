@@ -1,22 +1,9 @@
 import arrayBracketNewline from "./rules/array-bracket-newline";
-
-const PREFIX = '@incutonez';
+import arrayElementNewline from "./rules/array-element-newline";
 
 export = {
-    configs: {
-        recommended: {
-            parser: '@typescript-eslint/parser',
-            parserOptions: {
-                sourceType: "module",
-                ecmaVersion: "latest"
-            },
-            plugins: [PREFIX],
-            rules: {
-                [`${PREFIX}/array-bracket-newline`]: 'error',
-            },
-        },
-    },
     rules: {
-        'array-bracket-newline': arrayBracketNewline
+        'array-bracket-newline': arrayBracketNewline,
+        'array-element-newline': arrayElementNewline
     },
 };
