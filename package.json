@@ -7,6 +7,7 @@
     "@typescript-eslint/utils": "^7.1.1"
   },
   "devDependencies": {
+    "@semantic-release/git": "^10.0.1",
     "@typescript-eslint/eslint-plugin": "^7.1.1",
     "@typescript-eslint/parser": "^7.1.1",
     "@typescript-eslint/rule-tester": "^7.1.1",
