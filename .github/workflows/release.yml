@@ -58,6 +58,6 @@ jobs:
       - run: npm ci
       - run: |
           echo "$(jq '.publishConfig.registry = "https://registry.npmjs.org"' package.json)" > package.json
-          npm publish --access publish
+          npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
