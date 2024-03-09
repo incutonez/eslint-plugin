@@ -2,7 +2,7 @@
   "name": "@incutonez/eslint-plugin",
   "main": "./lib/index.js",
   "type": "commonjs",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "dependencies": {
     "@typescript-eslint/utils": "^7.1.1"
   },
@@ -34,7 +34,12 @@
   "repository": {
     "url": "https://github.com/incutonez/eslint-plugin"
   },
-  "keywords": ["eslint", "eslintplugin", "eslint-plugin", "typescript"],
+  "keywords": [
+    "eslint",
+    "eslintplugin",
+    "eslint-plugin",
+    "typescript"
+  ],
   "release": {
     "branches": [
       "main"
