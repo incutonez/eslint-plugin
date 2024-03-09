@@ -28,9 +28,6 @@
     "test": "vitest",
     "prepare": "husky"
   },
-  "publishConfig": {
-    "@incutonez:registry": "https://npm.pkg.github.com"
-  },
   "release": {
     "branches": [
       "main"
