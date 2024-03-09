@@ -3,8 +3,6 @@ on:
   push:
     branches:
       - main
-permissions:
-  contents: read
 jobs:
   release:
     environment: main
@@ -51,15 +49,15 @@ jobs:
     needs:
       - release
     runs-on: ubuntu-latest
-    permissions:
-      packages: write
-      contents: read
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+          registry-url: 'https://registry.npmjs.org'
       - run: npm ci
-      - run: npm publish --access publish
+      - run: |
+          echo "$(jq '.publishConfig.registry = "https://registry.npmjs.org"' package.json)" > package.json
+          npm publish --access publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}

@@ -2,7 +2,7 @@
   "name": "@incutonez/eslint-plugin",
   "main": "./lib/index.js",
   "type": "commonjs",
-  "version": "1.0.2",
+  "version": "1.0.0",
   "dependencies": {
     "@typescript-eslint/utils": "^7.1.1"
   },
@@ -27,6 +27,9 @@
     "build": "npx rimraf lib && npx tsc",
     "test": "vitest",
     "prepare": "husky"
+  },
+  "publishConfig": {
+    "@incutonez:registry": "https://npm.pkg.github.com"
   },
   "release": {
     "branches": [
