@@ -21,11 +21,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "lts/*"
-          registry-url: https://npm.pkg.github.com/
       - name: Install dependencies
         run: npm clean-install
       - name: Release
         env:
+          DEFAULT_NPM_REGISTRY: https://npm.pkg.github.com/
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
   npm-release:
@@ -45,10 +45,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "lts/*"
-          registry-url: https://registry.npmjs.org
       - name: Install dependencies
         run: npm clean-install
       - name: Release
         env:
+          DEFAULT_NPM_REGISTRY: https://registry.npmjs.org
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npx semantic-release
