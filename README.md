@@ -40,10 +40,10 @@ const valid = {
 `npm i @incutonez/eslint-plugin`
 
 Then in your ESLint config file, add the following:
-- In `plugins`, add `incutonez`
+- In `plugins`, add `@incutonez`
 - In `rules`, add:
 ```
-"incutonez/array-element-newline": [
+"@incutonez/array-element-newline": [
   "error",
   {
     "multiline": true,
@@ -51,7 +51,7 @@ Then in your ESLint config file, add the following:
     "bracesSameLine": true
   }
 ],
-"incutonez/array-bracket-newline": [
+"@incutonez/array-bracket-newline": [
   "error",
   {
     "multiline": true,
