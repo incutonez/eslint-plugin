@@ -37,3 +37,26 @@ const valid = {
 
 # Installation and Usage
 
+`npm i @incutonez/eslint-plugin`
+
+Then in your ESLint config file, add the following:
+- In `plugins`, add `incutonez`
+- In `rules`, add:
+```
+"incutonez/array-element-newline": [
+  "error",
+  {
+    "multiline": true,
+    "minItems": 5,
+    "bracesSameLine": true
+  }
+],
+"incutonez/array-bracket-newline": [
+  "error",
+  {
+    "multiline": true,
+    "minItems": 5,
+    "bracesSameLine": true
+  }
+],
+```
