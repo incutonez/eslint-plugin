@@ -37,7 +37,7 @@ const valid = {
 
 # Installation and Usage
 
-`npm i @incutonez/eslint-plugin`
+`npm i -D @incutonez/eslint-plugin`
 
 Then in your ESLint config file, add the following:
 - In `plugins`, add `@incutonez`
