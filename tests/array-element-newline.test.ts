@@ -146,7 +146,26 @@ ruleTester.run("array-element-newline", arrayElementNewline, {
          * ArrayExpression & ArrayPattern
          * { ArrayExpression: "always", ArrayPattern: "never" }
          */
-        { code: "var [a, b] = [1,\n2]", options: [{ ArrayExpression: "always", ArrayPattern: "never" }], parserOptions: { ecmaVersion: 6 } }],
+        { code: "var [a, b] = [1,\n2]", options: [{ ArrayExpression: "always", ArrayPattern: "never" }], parserOptions: { ecmaVersion: 6 } },
+        {
+            code: "const blah = {\n\"padding-line-between-statements\": [\"error\", {\nblankLine: \"always\",\nprev: \"*\",\nnext: \"export\",\n}]\n}",
+            parserOptions: { ecmaVersion: 6 },
+            options: [{
+                multiline: true,
+                minItems: 5,
+                bracesSameLine: true,
+            }]
+        },
+        {
+            code: "const blah = [\"error\", \"tab\", {\n    SwitchCase: 1,\n    ignoredNodes: [\"PropertyDefinition\"],\n }]",
+            parserOptions: { ecmaVersion: 6 },
+            options: [{
+                multiline: true,
+                minItems: 5,
+                bracesSameLine: true,
+            }]
+        }
+    ],
 
     invalid: [
         {

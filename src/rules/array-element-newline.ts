@@ -374,7 +374,9 @@ export default ESLintUtils.RuleCreator.withoutDocs({
                 if (options.bracesSameLine && ASTUtils.isOpeningBraceToken(maybeOpenBraceToken)) {
                     const next = sourceCode.getTokenAfter(maybeOpenBraceToken)!;
                     const before = sourceCode.getTokenBefore(maybeCloseBraceToken)!;
-                    if (ASTUtils.isTokenOnSameLine(maybeCloseBraceToken, before)) {
+                    /* Let's make sure we don't have an open bracket in the line before.
+                     * Also let's make a check to see if our opening brace IS on the same line as a closing brace */
+                    if (!ASTUtils.isOpeningBracketToken(before) && ASTUtils.isClosingBraceToken(maybeCloseBraceToken) && ASTUtils.isTokenOnSameLine(maybeCloseBraceToken, before)) {
                         reportRequiredEndingLinebreak(node, maybeCloseBraceToken);
                     }
                     if (ASTUtils.isTokenOnSameLine(maybeOpenBraceToken, next)) {
