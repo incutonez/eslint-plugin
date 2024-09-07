@@ -428,6 +428,21 @@ ruleTester.run("array-bracket-newline", arrayBracketNewline, {
             code: "var [\na,\nb\n] = foo;",
             options: [{ multiline: true }],
             parserOptions: { ecmaVersion: 6 }
+        },
+        {
+            code: "const columns = [\n// TODO: This is a valid comment, but it throws an error in the plugin\nuseDefaultColumns(), {\nblah: 2\n}]",
+            options: [{bracesSameLine: true}],
+            parserOptions: { ecmaVersion: 6 },
+        },
+        {
+            code: "var foo = [ // any comment\n1\n];",
+            options: ["always"],
+            parserOptions: { ecmaVersion: 6 },
+        },
+        {
+            code: "var foo = [\n// any comment\n1\n];",
+            options: ["always"],
+            parserOptions: { ecmaVersion: 6 },
         }
     ],
 
@@ -828,25 +843,6 @@ ruleTester.run("array-bracket-newline", arrayBracketNewline, {
             ]
         },
         {
-            code: "var foo = [ /* any comment */\n1, 2\n];",
-            output: "var foo = [ /* any comment */\n1, 2];",
-            options: ["never"],
-            errors: [
-                {
-                    messageId: "unexpectedOpeningLinebreak",
-                    type: "ArrayExpression",
-                    line: 1,
-                    column: 11
-                },
-                {
-                    messageId: "unexpectedClosingLinebreak",
-                    type: "ArrayExpression",
-                    line: 3,
-                    column: 1
-                }
-            ]
-        },
-        {
             code: "var foo = [\n1, 2\n/* any comment */];",
             output: "var foo = [1, 2\n/* any comment */];",
             options: ["never"],
@@ -862,25 +858,6 @@ ruleTester.run("array-bracket-newline", arrayBracketNewline, {
                     type: "ArrayExpression",
                     line: 3,
                     column: 18
-                }
-            ]
-        },
-        {
-            code: "var foo = [ // any comment\n1, 2\n];",
-            output: "var foo = [ // any comment\n1, 2];",
-            options: ["never"],
-            errors: [
-                {
-                    messageId: "unexpectedOpeningLinebreak",
-                    type: "ArrayExpression",
-                    line: 1,
-                    column: 11
-                },
-                {
-                    messageId: "unexpectedClosingLinebreak",
-                    type: "ArrayExpression",
-                    line: 3,
-                    column: 1
                 }
             ]
         },
@@ -1015,25 +992,6 @@ ruleTester.run("array-bracket-newline", arrayBracketNewline, {
                     messageId: "unexpectedClosingLinebreak",
                     type: "ArrayExpression",
                     line: 2,
-                    column: 1
-                }
-            ]
-        },
-        {
-            code: "var foo = [\n// any comment\n];",
-            output: null,
-            options: [{ multiline: true }],
-            errors: [
-                {
-                    messageId: "unexpectedOpeningLinebreak",
-                    type: "ArrayExpression",
-                    line: 1,
-                    column: 11
-                },
-                {
-                    messageId: "unexpectedClosingLinebreak",
-                    type: "ArrayExpression",
-                    line: 3,
                     column: 1
                 }
             ]

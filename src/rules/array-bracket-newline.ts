@@ -207,6 +207,9 @@ export default ESLintUtils.RuleCreator.withoutDocs({
 			})!;
 			const maybeOpenBrace = sourceCode.getTokenAfter(openBracket)!;
 			let maybeCloseBrace = sourceCode.getTokenBefore(closeBracket)!;
+			const maybeCommentBefore = sourceCode.getTokenBefore(maybeOpenBrace, {
+				includeComments: true
+			})!;
 			const needsLinebreaks = (
 				elements.length >= options.minItems
 				|| (
@@ -261,7 +264,8 @@ export default ESLintUtils.RuleCreator.withoutDocs({
 					reportRequiredEndingLinebreak(node, closeBracket);
 				}
 			}
-			else {
+			// If we have a comment before the first token in the array, we want to skip the code below
+			else if (!ASTUtils.isCommentToken(maybeCommentBefore)) {
 				if (!ASTUtils.isTokenOnSameLine(openBracket, maybeOpenBrace)) {
 					reportNoBeginningLinebreak(node, openBracket);
 				}
