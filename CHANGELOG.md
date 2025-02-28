@@ -1,3 +1,11 @@
+## [2.1.0](https://github.com/incutonez/eslint-plugin/compare/v2.0.0...v2.1.0) (2025-02-28)
+
+### Features
+
+* Adding dependency on previous step and hopefully fixing GH package step ([965211d](https://github.com/incutonez/eslint-plugin/commit/965211dcc261cac3fdbaaaf22fc145bdfb091980))
+* Adding dependency on previous step and hopefully fixing GH package step ([cde6684](https://github.com/incutonez/eslint-plugin/commit/cde6684faaa60f8abbb20e4226b3660f1c956d3d))
+* Adding NPM Publish Step ([0c5cd1b](https://github.com/incutonez/eslint-plugin/commit/0c5cd1b2292e2c8da4d4cf232540824fc905b3cc))
+
 ## [2.0.0](https://github.com/incutonez/eslint-plugin/compare/v1.1.4...v2.0.0) (2025-02-28)
 
 ### ⚠ BREAKING CHANGES
