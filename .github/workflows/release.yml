@@ -23,12 +23,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "lts/*"
-          registry-url: "https://npm.pkg.github.com"
-      - name: Create npmrc
-        run: echo '//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN  }}' >> ${{ github.workspace }}/.npmrc
+      - name: Change to GH Registry
+        run: npm config set registry https://npm.pkg.github.com
+      - name: Add Auth Tokens
+        run: echo -e "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN  }}\n//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN  }}" >> ${{ github.workspace }}/.npmrc
       - name: Install dependencies
         run: npm clean-install
-      - name: Release
+      - name: Semantic Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.SEMANTIC_RELEASE }}
@@ -39,10 +40,8 @@ jobs:
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Change NPM Registry
-        run: |
-          npx rimraf ${{ github.workspace }}/.npmrc
-          npm config set registry https://registry.npmjs.org
+      - name: Change to NPM Registry
+        run: npm config set registry https://registry.npmjs.org
       - name: Publish NPM Package
         run: npm publish
         env:
