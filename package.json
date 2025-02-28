@@ -4,21 +4,21 @@
   "type": "commonjs",
   "version": "1.1.4",
   "dependencies": {
-    "@typescript-eslint/utils": "^8.4.0"
+    "@typescript-eslint/utils": "^8.25.0"
   },
   "devDependencies": {
     "@semantic-release/git": "^10.0.1",
-    "@semantic-release/github": "^10.3.3",
+    "@semantic-release/github": "^11.0.1",
     "@semantic-release/npm": "^12.0.1",
-    "@typescript-eslint/eslint-plugin": "^8.4.0",
-    "@typescript-eslint/parser": "^8.4.0",
-    "@typescript-eslint/rule-tester": "^8.4.0",
-    "eslint": "^9.10.0",
-    "husky": "^9.1.5",
-    "semantic-release": "^24.1.0",
+    "@typescript-eslint/eslint-plugin": "^8.25.0",
+    "@typescript-eslint/parser": "^8.25.0",
+    "@typescript-eslint/rule-tester": "^8.25.0",
+    "eslint": "^9.21.0",
+    "husky": "^9.1.7",
+    "semantic-release": "^24.2.3",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.4",
-    "vitest": "^2.0.5"
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.7"
   },
   "files": [
     "lib"
@@ -45,9 +45,25 @@
       "main"
     ],
     "plugins": [
-      "@semantic-release/commit-analyzer",
-      "@semantic-release/release-notes-generator",
-      "@semantic-release/npm",
+      [
+        "@semantic-release/commit-analyzer",
+        {
+          "preset": "conventionalcommits"
+        }
+      ],
+      [
+        "@semantic-release/release-notes-generator",
+        {
+          "preset": "conventionalcommits"
+        }
+      ],
+      "@semantic-release/changelog",
+      [
+        "@semantic-release/npm",
+        {
+          "npmPublish": false
+        }
+      ],
       "@semantic-release/git",
       "@semantic-release/github"
     ]
