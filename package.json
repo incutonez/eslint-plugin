@@ -34,7 +34,7 @@
     "access": "public"
   },
   "repository": {
-    "url": "https://github.com/incutonez/eslint-plugin"
+    "url": "https://github.com/incutonez/eslint-plugin.git"
   },
   "keywords": [
     "eslint",
