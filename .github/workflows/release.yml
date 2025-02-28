@@ -40,7 +40,9 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Change NPM Registry
-        run: npm config set registry https://registry.npmjs.org
+        run: |
+          npx rimraf ${{ github.workspace }}/.npmrc
+          npm config set registry https://registry.npmjs.org
       - name: Publish NPM Package
         run: npm publish
         env:
