@@ -23,8 +23,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "lts/*"
-      - name: Change to GH Registry
-        run: npm config set registry https://npm.pkg.github.com
       - name: Add Auth Tokens
         run: echo -e "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN  }}\n//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN  }}" >> ${{ github.workspace }}/.npmrc
       - name: Install dependencies
@@ -36,6 +34,8 @@ jobs:
         run: npx semantic-release --deps.bump=inherit
       - name: Build UI
         run: npm run build
+      - name: Change to GH Registry
+        run: npm config set registry https://npm.pkg.github.com
       - name: Publish GH Package
         run: npm publish
         env:
