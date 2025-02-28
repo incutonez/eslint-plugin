@@ -35,37 +35,13 @@ jobs:
         run: npx semantic-release --deps.bump=inherit
       - name: Build UI
         run: npm run build
-      - name: Publish Package
+      - name: Publish GH Package
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  release_npm:
-    needs:
-      - release
-    environment: main
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write # to be able to publish a GitHub release
-      issues: write # to be able to comment on released issues
-      pull-requests: write # to be able to comment on released pull requests
-      id-token: write # to enable use of OIDC for npm provenance
-      packages: write
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "lts/*"
-          registry-url: "https://registry.npmjs.org"
-      - name: Install dependencies
-        run: npm clean-install
-      - name: Build UI
-        run: npm run build
-      - name: Publish Package
+      - name: Change NPM Registry
+        run: npm config set registry https://registry.npmjs.org
+      - name: Publish NPM Package
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
