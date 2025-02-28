@@ -1,3 +1,12 @@
+## [2.1.4](https://github.com/incutonez/eslint-plugin/compare/v2.1.3...v2.1.4) (2025-02-28)
+
+### Bug Fixes
+
+* Fix NPM release ([3e90b8b](https://github.com/incutonez/eslint-plugin/commit/3e90b8b24684015a55a0b232b2a00f1e625fc033))
+* Fix NPM release ([8651754](https://github.com/incutonez/eslint-plugin/commit/8651754965e35dfbbd63be700c271db85d111f1f))
+* Fix NPM release ([#16](https://github.com/incutonez/eslint-plugin/issues/16)) ([8ab7843](https://github.com/incutonez/eslint-plugin/commit/8ab784306b0dd76e8c8bd397a99e08b0aae8036c))
+* Fix NPM release ([#17](https://github.com/incutonez/eslint-plugin/issues/17)) ([67ea370](https://github.com/incutonez/eslint-plugin/commit/67ea3708ce1a99d455931a34502a2b584d99565f))
+
 ## [2.1.3](https://github.com/incutonez/eslint-plugin/compare/v2.1.2...v2.1.3) (2025-02-28)
 
 ### Bug Fixes
