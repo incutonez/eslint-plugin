@@ -1,3 +1,7 @@
+# Deprecated
+
+Note to self: I should no longer use this package and instead use [eslint-plugin-antfu](https://github.com/antfu/eslint-plugin-antfu), as it's far superior.
+
 # Purpose
 
 I wanted my braces in objects (and arrays) to be on the same line as each other, and the brackets of an array, so I had to alter 2 ESLint properties [array-bracket-newline](https://eslint.org/docs/latest/rules/array-bracket-newline) and [array-element-newline](https://eslint.org/docs/latest/rules/array-element-newline).  This repo contains those overrides.  See also this [SO Question](https://stackoverflow.com/questions/55502657/js-array-of-objects-formatting).
